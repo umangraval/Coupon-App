@@ -7,3 +7,4 @@ dist
 *.js
 *.map
 *.log
+.migration_backup
