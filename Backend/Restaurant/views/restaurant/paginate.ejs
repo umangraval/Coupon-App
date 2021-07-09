@@ -1,0 +1,176 @@
+<!--paginate.ejs-->
+<section>
+
+    <div class="columns is-multiline">
+        <div class="column is-two-third is-multiline">
+            <div class="columns" id="datas">
+                
+            </div>
+        </div>
+
+        <div class="column is-one-third">
+            <form>
+                <div class="field">
+                    <label class="label">Region</label>
+                    <div class="control">
+                        <div class="select">
+                            <select name="region" id="region">
+                                <option value="">Select your region here.</option>
+                                <option value="HKIsland">HK Island</option>
+                                <option value="Kowloon">Kowloon</option>
+                                <option value="New_Territories">New Territories</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="field">
+                    <label class="label">Min Coins</label>
+                    <div class="control">
+                        <input class="input" type="number" id="minCoin" name="minCoin"  min="0" max="9999999">
+                    </div>
+                </div>
+        
+                <div class="field">
+                    <label class="label">Max Coins</label>
+                    <div class="control">
+                        <input class="input" type="number" id="maxCoin" name="maxCoin"  min="0" max="9999999">
+                    </div>
+                </div>
+    
+                <div class="field">
+                    <label class="label">Deal Valid Till</label>
+                    <div class="control">
+                        <input class="input" id="valid" type="date" name="validity">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-link" type="submit" onclick="fetchPage()">Search</button>
+                    </div>
+                </div>
+    
+            </form>
+        </div>
+    </div>
+    
+</section>
+
+<nav class="pagination" role="navigation" aria-label="pagination">
+    <a class="pagination-previous" id="previousButton">Previous</a>
+    <a class="pagination-next" id="nextButton">Next page</a>
+    <ul class="pagination-list">
+        <li>
+            <a class="pagination-link" id="firstLink">1</a>
+        </li>
+        <li>
+            <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+        <li>
+            <a class="pagination-link" id="previousLink">45</a>
+        </li>
+        <li>
+            <a class="pagination-link is-current" id="currentLink">46</a>
+        </li>
+        <li>
+            <a class="pagination-link" id="nextLink">47</a>
+        </li>
+        <li>
+            <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+        <li>
+            <a class="pagination-link" id="lastLink">86</a>
+        </li>
+    </ul>
+</nav>
+<script>
+    var numOfRecords;
+      function setPagination(limit, offset) {
+       
+        var previousButton = document.getElementById("previousButton");
+        var nextButton = document.getElementById("nextButton");
+        var currentLink = document.getElementById("currentLink");
+        var previousLink = document.getElementById("previousLink");
+        var nextLink = document.getElementById("nextLink");
+        var firstLink = document.getElementById("firstLink");
+        var lastLink = document.getElementById("lastLink");
+
+        
+        var minCoin = parseInt("<%= req.query.minCoin %>");
+        var maxCoin = parseInt("<%= req.query.maxCoin %>");
+        var region = "<%= req.query.region %>"
+        // var limit = Math.max(parseInt("<%= req.query.limit %>"), 2) || 2;
+        // var offset = Math.max(parseInt("<%= req.query.offset %>"), 0) || 0;
+
+        // var baseUrl = "/restaurant/search?limit=" + limit + "&minCoin=" + minCoin + "&maxCoin=" + maxCoin + "&region=" + region +  "&offset=";
+
+        // firstLink.href = baseUrl + 0;
+        // previousButton.href = baseUrl + (offset - limit);
+        // previousLink.href = baseUrl + (offset - limit);
+        // currentLink.href = baseUrl + offset;
+        // nextLink.href = baseUrl + (offset + limit);
+        // nextButton.href = baseUrl + (offset + limit);
+        // lastLink.href = baseUrl + (Math.ceil(numOfRecords / limit) - 1) * limit;
+        firstLink.onclick = function () { fecthPage(limit, 0) };
+        previousLink.onclick = function () { fecthPage(limit, offset - limit) };
+        previousButton.onclick = function () { fecthPage(limit, offset - limit) };
+        currentLink.onclick = function () { fecthPage(limit, offset) };
+        nextLink.onclick = function () { fecthPage(limit, offset + limit) };
+        nextButton.onclick = function () { fecthPage(limit, offset + limit) };
+        lastLink.onclick = function () { fecthPage(limit, (Math.ceil(numOfRecords / limit - 1) * limit)) };
+
+
+        var currentPageNumber = Math.floor(offset / limit) + 1;
+        // console.log(currentPageNumber);
+
+        previousLink.innerHTML = currentPageNumber - 1;
+        currentLink.innerHTML = currentPageNumber;
+        nextLink.innerHTML = currentPageNumber + 1;
+        lastLink.innerHTML = Math.ceil(numOfRecords / limit); 
+        console.log(limit, offset);
+        if (offset <= 0) {
+            previousButton.style.display = "none";
+            // previousButton.setAttribute("disabled", true);
+            // previousButton.href = "";
+            previousLink.style.display = "none";
+        } else {
+            previousButton.style.display = "block";
+            // previousButton.removeAttribute("disabled");
+            previousLink.style.display = "block";
+        }
+        if (offset + limit >= numOfRecords) {
+            nextButton.style.display = "none";
+            // nextButton.setAttribute("disabled", true);
+            nextLink.style.display = "none";
+        } else {
+            nextButton.style.display = "block";
+            // nextButton.removeAttribute("disabled");
+            nextLink.style.display = "block";
+        }
+    }
+    setPagination(2, 0);
+
+</script>
+<script>
+    async function fecthPage(limit, offset) {
+         var minCoin = parseInt("<%= req.query.minCoin %>");
+         var maxCoin = parseInt("<%= req.query.maxCoin %>");
+         var region = "<%= req.query.region %>"
+         var validity = "<%= req.query.validity %>"
+         var response = await fetch("/restaurant/search?limit=" + limit + "&minCoin=" + minCoin + "&maxCoin=" + maxCoin + "&region=" + region + "&validity=" + validity+ "&offset=" + offset);
+         var data = await response.json();     
+         console.log(data);    
+         if (response.ok) {
+            numOfRecords = data.numOfRecords;
+            document.getElementById("datas").innerHTML = '';
+            data.restaurants.forEach(restaurant => {
+                document.getElementById("datas").innerHTML += '<div class="column is-half is-gapless"> <a href ="/restaurant/read/'+restaurant.id +'"> <div class="box"><figure> <img src="'+restaurant.imageurl +'" width="420"></figure><div><a href ="/restaurant/read/'+restaurant.id +'">'+restaurant.restaurantname+'</a></div><div>'+restaurant.title+'</div><div>Coins: '+ restaurant.coin+'</div></div> </a> </div>';
+            });
+            setPagination(limit, offset);
+         } else {
+            alert(response.status + ": " + response.statusText);
+         }
+     };
+     fecthPage(2,0);  
+</script>

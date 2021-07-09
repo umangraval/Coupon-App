@@ -1,0 +1,55 @@
+<div class="columns is-two-third is-multiline is-centered">
+
+    <div class="row is-multiline">
+                                <Strong>HONG KONG ISLAND</Strong>
+        <% restaurantsone.forEach( function(restaurant) { %>
+            <div class="column is-gapless">
+            <a href ="/restaurant/read/<%= restaurant.id %>"> <div class="box">  
+                    <figure>
+                        <img src="<%= restaurant.imageurl %>" width="300">
+                    </figure>
+                    <a href ="/restaurant/read/<%= restaurant.id %>"> <div><strong><%= restaurant.restaurantname %></strong></div> </a>
+                    <div><%= restaurant.title %></div>
+                    <div>Coins: <%= restaurant.coin %></div>
+                </div> </a> 
+            </div>
+        <% }); %>  
+    </div>
+
+    <div class="row is-multiline">
+                                <Strong>KOWLOON</Strong>
+        <% restaurantstwo.forEach( function(restaurant) { %>
+                             
+            <div class="column is-gapless">
+            <a href ="/restaurant/read/<%= restaurant.id %>"> <div class="box">  
+                    <figure>
+                        <img src="<%= restaurant.imageurl %>" width="300">
+                    </figure>
+                    <a href ="/restaurant/read/<%= restaurant.id %>"> <div><strong><%= restaurant.restaurantname %></strong></div> </a>
+                    <div><%= restaurant.title %></div>
+                    <div>Coins: <%= restaurant.coin %></div>
+                </div> </a> 
+            </div>
+
+        <% }); %> 
+    </div>
+
+    <div class="row is-multiline">
+                                <Strong>NEW TERRITORIES</Strong>
+        <% restaurantsthree.forEach( function(restaurant) { %>
+
+            <div class="column is-gapless">
+            <a href ="/restaurant/read/<%= restaurant.id %>"> <div class="box">  
+                    <figure>
+                        <img src="<%= restaurant.imageurl %>" width="300">
+                    </figure>
+                    <a href ="/restaurant/read/<%= restaurant.id %>"> <div><strong><%= restaurant.restaurantname %></strong></div> </a>
+                    <div><%= restaurant.title %></div>
+                    <div>Coins: <%= restaurant.coin %></div>
+                </div> </a> 
+            </div>
+
+        <% }); %>
+    </div>
+     
+</div>

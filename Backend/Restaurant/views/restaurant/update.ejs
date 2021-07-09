@@ -1,0 +1,233 @@
+<!--update.ejs-->
+<form action="/restaurant/update/<%= restaurant.id %>" method="post" onsubmit="submitForm(this);return false">
+    <div class="columns">
+        <div class="column">
+        <div class="field">
+            <label class="label">Title</label>
+            <div class="control">
+                <input class="input" type="text" name="title" placeholder="Enter title here" value = "<%= restaurant.title %>" required>
+            </div>
+        </div>
+    
+        <div class="field">
+            <label class="label">Restaurant</label>
+            <div class="control">
+                <input class="input" type="text" name="restaurantname" placeholder="Enter title here" value = "<%= restaurant.restaurantname %>" required>
+            </div>
+        </div>
+    
+        <div class="field">
+            <label class="label">Region</label>
+            <div class="control">
+              <div class="select">
+                <select onchange="regionSelected(this.value)" name="region" id="region" required>
+                  <option value= ""> Select Option!</option>
+                  <option value="HKIsland">HK Island</option>
+                  <option value="Kowloon">Kowloon</option>
+                  <option value="New_Territories">New Territories</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Mall</label>
+            <div class="control">
+                <div class="select">
+                    <select id="mall" name="mall" disabled>
+                    </select>
+                </div>
+            </div>
+        </div>
+          
+        <div class="field">
+            <label class="label">Image</label>
+            <div class="control">
+                <input class="input" type="url" name="imageurl" placeholder="Enter Image URL here" value = "<%= restaurant.imageurl %>" required>
+            </div>
+        </div>
+
+        </div>
+    
+     <div class="column">
+         
+        <div class="field">
+            <label class="label">Quota</label>
+            <div class="control">
+                <input class="input" type="number" name="quota" placeholder="Enter Quota" value = "<%= restaurant.quota %>"required>
+            </div>
+        </div>
+     
+        <div class="field">
+            <label class="label">Coin</label>
+            <div class="control">
+                <input class="input" type="number" name="coin" placeholder="Enter Coin" value = "<%= restaurant.coin %>"required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Deal Valid Till</label>
+            <div class="control">
+                <input class="input" type="date" name="validity" value = "<%= restaurant.validity %>"required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Details</label>
+            <div class="control">
+                <input class="input" type="text" name="details" placeholder="Enter Details" value = "<%= restaurant.details %>"required>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button type="submit" class="button is-link"> Update </button>
+            </div>
+        </div>
+    </div>
+    </div>
+     
+    <script>
+        var HKIsland = ["IFC Mall", "Pacific Place", "Times Square"];
+        var Kowloon = ["Elements", "Harbour City", "Festival Walk", "Megabox", "APM"];
+        var New_Territories = ["New Town Plaza", "Tsuen Wan Plaza"];
+        function setRegion(){
+            document.getElementById("region").value = "<%= restaurant.region %>";
+            var regionVal = document.getElementById("region").value;
+            var mallElem = document.getElementById("mall");
+            mallElem.options.length = 0;
+
+            if (regionVal == "HKIsland"){
+                HKIsland.forEach(function (item) {
+                var option = document.createElement("option");
+                option.text = item;
+                option.value = item;
+                mallElem.add(option);
+                });
+
+                mallElem.disabled = false;
+            }else if (regionVal == "Kowloon") {
+
+                Kowloon.forEach(function (item) {
+                var option = document.createElement("option");
+                option.text = item;
+                option.value = item;
+                mallElem.add(option);
+                });
+
+                mallElem.disabled = false;
+            }else if (regionVal == "New_Territories"){
+                New_Territories.forEach(function(item) {
+                var option = document.createElement("option");
+                option.text = item;
+                option.value = item;
+                mallElem.add(option);
+                });
+
+                mallElem.disabled = false;
+            }else {
+                mallElem.disabled = true;
+            }
+        }
+
+        setRegion()
+
+        function setMall(){
+            document.getElementById("mall").value = "<%= restaurant.mall %>";
+        }
+
+        setMall()
+
+        function regionSelected(region) {
+    
+            var mallElem = document.getElementById("mall");
+            mallElem.options.length = 0;
+    
+            if (region == "HKIsland") {
+    
+                HKIsland.forEach(function (item) {
+                var option = document.createElement("option");
+                option.text = item;
+                option.value = item;
+                mallElem.add(option);
+                });
+    
+                mallElem.disabled = false;
+    
+            } else if (region == "Kowloon") {
+    
+                Kowloon.forEach(function (item) {
+                var option = document.createElement("option");
+                option.text = item;
+                option.value = item;
+                mallElem.add(option);
+                });
+    
+                mallElem.disabled = false;
+    
+            } else if (region == "New_Territories"){
+    
+                New_Territories.forEach(function(item) {
+                var option = document.createElement("option");
+                option.text = item;
+                option.value = item;
+                mallElem.add(option);
+                });
+    
+                mallElem.disabled = false;
+    
+            } else {
+    
+                mallElem.disabled = true;
+            }
+        }
+    
+    </script>
+    
+</form>
+
+<!-- <form action="/restaurant/delete/<%= restaurant.id %>" method="post"> -->
+    <div class="control">
+        <button type="button" class="button is-danger" onclick="deleteRestaurant('<%= restaurant.id %>')">Delete</button>
+    </div>
+<!-- </form> -->
+
+<script>
+    async function deleteRestaurant(id) {
+        var r = confirm("Delete the coupon?");
+        
+        if (r) {
+            var response = await fetch("/restaurant/" + id, {
+            method: "DELETE",
+            });
+
+            if (response.ok) {
+                alert("Coupon is deleted.");
+                location.assign("/");
+            } else {
+                alert(response.status + ": " + response.statusText);
+            }
+
+        } else {
+            alert("cancelled");
+        }
+    };
+</script>
+
+
+<script>
+    async function submitForm(formElem) {
+        var r = confirm("Update the coupon?");
+        
+        if (r) {
+            var response = await fetch(formElem.action, {
+            method: formElem.method,
+            body: new FormData(formElem),
+        });
+            if (response.ok) {
+                alert("Coupon is updated.");
+                location.assign("/restaurant/read/<%= restaurant.id %>");
+            } else {
+                alert(response.status + ": " + response.statusText);
+            }
+        } else {
+            alert("cancelled");
+        }
+    };
+</script>

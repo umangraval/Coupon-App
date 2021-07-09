@@ -1,0 +1,52 @@
+<!--read.ejs-->
+<table class="table is-striped is-hoverable">
+    <tr>
+            <td>    <img src="<%= restaurant.imageurl %>" width="500"></td>
+            <td> <ul style="list-style-type:disc">
+            <li> <strong><%= restaurant.restaurantname %></strong></li>
+            <li> <strong><%= restaurant.title %></strong></li>
+            <li> <strong>Coins: </strong><%= restaurant.coin %></li>
+            <li> <strong>Address: </strong><%= restaurant.mall %>, <%= restaurant.region %></li>
+            <li> <strong>Valid Till: </strong><%= restaurant.validity %></li> 
+            <li> <%= restaurant.details %></li>  
+              
+        </ul></td>
+        <td>
+        <span style="display:none;" id="rid"><%= restaurant.id %></span>
+            <button id="mybtn" type ="submit" class="button is-link" onclick="redeemCoupons('<%= restaurant.id %>')">
+                <strong>Redeem</strong>
+               </button>
+        </td>
+    </tr>
+</table>
+
+<script>
+    async function chk(id) {
+        var resp = await fetch("/restaurants/checkredeem/"+id );
+        if (resp.ok) {
+            var pass = 0;
+        } else {
+            document.getElementById("mybtn").style.display = "none";
+        }
+    }
+    var rid = document.getElementById("rid").innerText;
+    chk(rid);
+    
+    async function redeemCoupons(id) {
+        var r = confirm("Are you sure to redeem?");   
+        if (r) {
+            var response = await fetch("/restaurants/redeem/"+id );
+
+            if (response.ok) {
+                alert("Coupon redeemed");
+                location.assign("/");
+            } else {
+                var msg = await response.json();
+                alert(response.status + ": " + msg);
+            }
+
+        } else {
+            alert("cancelled");
+        }
+    };
+</script>

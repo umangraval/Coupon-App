@@ -1,0 +1,21 @@
+<!--coupons.ejs-->
+
+<p style="text-align: left; width:49%; display: inline-block;"><strong>Redeemed Coupons:</strong></p>
+<p style="text-align: right; width:50%;  display: inline-block;"><strong>Current Balance: <%= coins %></strong></p>
+
+<div class="columns is-two-third is-multiline is-centered">
+
+            <% restaurants.forEach( function(restaurant) { %>
+               
+                <div class="column is-one-third is-gapless">
+                <a href ="/restaurant/read/<%= restaurant.id %>"> <div class="box">  
+                        <figure>
+                            <img src="<%= restaurant.imageurl %>" width="420">
+                        </figure>
+                        <div><a href ="/restaurant/read/<%= restaurant.id %>"><%= restaurant.restaurantname %></a></div>
+                        <div><%= restaurant.title %></div>
+                        <div>Expiry: <%= restaurant.validity %></div>
+                    </div> </a> 
+                </div>
+        <% }); %>
+        </div>

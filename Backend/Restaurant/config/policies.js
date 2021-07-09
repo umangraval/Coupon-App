@@ -1,0 +1,35 @@
+/**
+ * Policy Mappings
+ * (sails.config.policies)
+ *
+ * Policies are simple functions which run **before** your actions.
+ *
+ * For more information on configuring policies, check out:
+ * https://sailsjs.com/docs/concepts/policies
+ */
+
+const { admin } = require("../api/controllers/RestaurantController");
+
+module.exports.policies = {
+
+  /***************************************************************************
+  *                                                                          *
+  * Default policy for all controllers and actions, unless overridden.       *
+  * (`true` allows public access)                                            *
+  *                                                                          *
+  ***************************************************************************/
+
+  // '*': true,
+
+  RestaurantController: {
+    create: 'isAdmin',
+    admin: 'isAdmin',
+    update: 'isAdmin',
+    delete: 'isAdmin',
+    redeemed: 'isAdmin',
+    redeem: 'isMember',
+    list: 'isMember',
+    checkredeem: 'isMember'
+  }
+
+};

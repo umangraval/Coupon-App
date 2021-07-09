@@ -4,7 +4,7 @@
             <StackLayout orientation="horizontal"
                 ios:horizontalAlignment="center"
                 android:horizontalAlignment="left">
-                <Image src="~/images/logo.PNG" width="200px" />
+                <Image src="https://i.ibb.co/ckHNRXL/logo.png" width="200px" />
             </StackLayout>
         </ActionBar>
         <StackLayout>

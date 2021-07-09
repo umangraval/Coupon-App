@@ -1,0 +1,18 @@
+<!--admin.ejs-->
+<table class="table is-hoverable is-fullwidth">
+
+    <tr><td><strong>ID</strong></td><strong>Quota</strong></td><td><strong>Title</strong></td> <td> <strong>Restaurant</strong></td></tr>
+    
+    <% restaurants.forEach( function(restaurant) { %>
+        <tr>
+            <td><%= restaurant.id %></td>
+            <td><%= restaurant.quota %></td>
+            <td><%= restaurant.title %></td>
+            <td><%= restaurant.restaurantname %></td>
+            <td> <a href="/restaurant/update/<%= restaurant.id %>" >Update</a></td>
+            <td> <a href="/restaurants/redeemed/<%= restaurant.id %>" >Redeemed Members</a></td>
+        </tr>
+    
+    <% }); %>
+
+</table>

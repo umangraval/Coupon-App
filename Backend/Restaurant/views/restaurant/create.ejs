@@ -1,0 +1,157 @@
+<!--create.ejs-->
+
+<form action="/restaurant/create" method="post" onsubmit="submitForm(this);return false">
+    <div class="columns">
+        <div class="column">
+        <div class="field">
+            <label class="label">Title</label>
+            <div class="control">
+                <input class="input" type="text" name="title" placeholder="Enter title here" required>
+            </div>
+        </div>
+    
+        <div class="field">
+            <label class="label">Restaurant</label>
+            <div class="control">
+                <input class="input" type="text" name="restaurantname" placeholder="Enter title here" required>
+            </div>
+        </div>
+    
+        <div class="field">
+            <label class="label">Region</label>
+            <div class="control">
+              <div class="select">
+                <select onchange="regionSelected(this.value)" name="region" id="region">
+                  <option value= ""> Select Option!</option>
+                  <option value="HKIsland">HK Island</option>
+                  <option value="Kowloon">Kowloon</option>
+                  <option value="New_Territories">New Territories</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Mall</label>
+            <div class="control">
+                <div class="select">
+                    <select id="mall" name="mall" disabled>
+                    </select>
+                </div>
+            </div>
+        </div>
+          
+        <div class="field">
+            <label class="label">Image</label>
+            <div class="control">
+                <input class="input" type="url" name="imageurl" placeholder="Enter Image URL here" required>
+            </div>
+        </div>
+        </div>
+    
+     <div class="column">
+         
+        <div class="field">
+            <label class="label">Quota</label>
+            <div class="control">
+                <input class="input" type="number" name="quota" placeholder="Enter Quota" required>
+            </div>
+        </div>
+     
+        <div class="field">
+            <label class="label">Coin</label>
+            <div class="control">
+                <input class="input" type="number" name="coin" placeholder="Enter Coin" required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Deal Valid Till</label>
+            <div class="control">
+                <input class="input" type="date" name="validity" required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Details</label>
+            <div class="control">
+                <input class="input" type="text" name="details" placeholder="Enter Details" required>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-link" type="submit">Submit</button>
+            </div>
+        </div>
+    </div>
+    </div>
+     
+    <script>
+        var HKIsland = ["IFC Mall", "Pacific Place", "Times Square"];
+        var Kowloon = ["Elements", "Harbour City", "Festival Walk", "Megabox", "APM"];
+        var New_Territories = ["New Town Plaza", "Tsuen Wan Plaza"];
+    
+        function regionSelected(region) {
+    
+            var mallElem = document.getElementById("mall");
+            mallElem.options.length = 0;
+    
+            if (region == "HKIsland") {
+    
+                HKIsland.forEach(function (item) {
+                var option = document.createElement("option");
+                option.text = item;
+                option.value = item;
+                mallElem.add(option);
+                });
+    
+                mallElem.disabled = false;
+    
+            } else if (region == "Kowloon") {
+    
+                Kowloon.forEach(function (item) {
+                var option = document.createElement("option");
+                option.text = item;
+                option.value = item;
+                mallElem.add(option);
+                });
+    
+                mallElem.disabled = false;
+    
+            } else if (region == "New_Territories"){
+    
+                New_Territories.forEach(function(item) {
+                var option = document.createElement("option");
+                option.text = item;
+                option.value = item;
+                mallElem.add(option);
+                });
+    
+                mallElem.disabled = false;
+    
+            } else {
+    
+                mallElem.disabled = true;
+            }
+        }
+    
+    </script>
+    </form>
+
+    <script>
+        async function submitForm(formElem) {
+            var r = confirm("Create the coupon?");
+            
+            if (r) {
+                var response = await fetch(formElem.action, {
+                method: formElem.method,
+                body: new FormData(formElem),
+            });
+                if (response.ok) {
+                    alert("New Coupon is created.");
+                    location.assign("/");
+                } else {
+                    alert(response.status + ": " + response.statusText);
+                }
+            } else {
+                alert("cancelled");
+            }
+        };
+    </script>

@@ -1,0 +1,16 @@
+
+        <!--coupons.ejs-->
+<table class="table is-hoverable is-fullwidth">
+
+    <tr><td><strong>ID</strong></td><td><strong>Username</strong></td> </tr>
+    
+    <% members.forEach( function(member) { %>
+        <tr>
+            <td><%= member.id %></td>
+            <td><%= member.username %></td>
+           
+        </tr>
+    
+    <% }); %>
+
+</table>
